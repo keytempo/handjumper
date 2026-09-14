@@ -1,0 +1,670 @@
+{
+  "totalEpisodes": 133,
+  "episodes": [
+    {
+      "episode": 1,
+      "title": "Ep. 1 - Beginning of the End",
+      "panelCount": 260
+    },
+    {
+      "episode": 2,
+      "title": "Ep. 2 - Yellow Ties",
+      "panelCount": 136
+    },
+    {
+      "episode": 3,
+      "title": "Ep. 3 - Final Test",
+      "panelCount": 152
+    },
+    {
+      "episode": 4,
+      "title": "Ep. 4 - Flying the Nest",
+      "panelCount": 195
+    },
+    {
+      "episode": 5,
+      "title": "Ep. 5 - New Horizons",
+      "panelCount": 203
+    },
+    {
+      "episode": 6,
+      "title": "Ep. 6 - The Instructor",
+      "panelCount": 140
+    },
+    {
+      "episode": 7,
+      "title": "Ep. 7 - The Fourth Cell",
+      "panelCount": 128
+    },
+    {
+      "episode": 8,
+      "title": "Ep. 8 - Red Letter",
+      "panelCount": 199
+    },
+    {
+      "episode": 9,
+      "title": "Ep. 9 - Suiting Up",
+      "panelCount": 181
+    },
+    {
+      "episode": 10,
+      "title": "Ep. 10 - Rapture",
+      "panelCount": 119
+    },
+    {
+      "episode": 11,
+      "title": "Ep. 11 - No-Kill Rule",
+      "panelCount": 129
+    },
+    {
+      "episode": 12,
+      "title": "Ep. 12 - Bad Vibes",
+      "panelCount": 114
+    },
+    {
+      "episode": 13,
+      "title": "Ep. 13 - The Butcher",
+      "panelCount": 115
+    },
+    {
+      "episode": 14,
+      "title": "Ep. 14 - Don't Look Down",
+      "panelCount": 153
+    },
+    {
+      "episode": 15,
+      "title": "Ep. 15 - The Butchered",
+      "panelCount": 189
+    },
+    {
+      "episode": 16,
+      "title": "Ep. 16 - Unforgivable!",
+      "panelCount": 134
+    },
+    {
+      "episode": 17,
+      "title": "Ep. 17 - Revenge Story",
+      "panelCount": 149
+    },
+    {
+      "episode": 18,
+      "title": "Ep. 18 - Home Invasion",
+      "panelCount": 145
+    },
+    {
+      "episode": 19,
+      "title": "Ep. 19 - I, Chronos",
+      "panelCount": 128
+    },
+    {
+      "episode": 20,
+      "title": "Ep. 20 - Lost Time",
+      "panelCount": 186
+    },
+    {
+      "episode": 21,
+      "title": "Ep. 21 - Punch Me",
+      "panelCount": 207
+    },
+    {
+      "episode": 22,
+      "title": "Ep. 22 - Fight Club",
+      "panelCount": 183
+    },
+    {
+      "episode": 23,
+      "title": "Ep. 23 - Play Dirty",
+      "panelCount": 155
+    },
+    {
+      "episode": 24,
+      "title": "Ep. 24 - Welcome to the Underside",
+      "panelCount": 147
+    },
+    {
+      "episode": 25,
+      "title": "Ep. 25 - The Crimson Society",
+      "panelCount": 141
+    },
+    {
+      "episode": 26,
+      "title": "Ep. 26 - Common Ancestor",
+      "panelCount": 146
+    },
+    {
+      "episode": 27,
+      "title": "Ep. 27 - The Absolute Worst",
+      "panelCount": 151
+    },
+    {
+      "episode": 28,
+      "title": "Ep. 28 - Capture the Flag",
+      "panelCount": 136
+    },
+    {
+      "episode": 29,
+      "title": "Ep. 29 - Bootlicker",
+      "panelCount": 114
+    },
+    {
+      "episode": 30,
+      "title": "Ep. 30 - Round One",
+      "panelCount": 127
+    },
+    {
+      "episode": 31,
+      "title": "Ep. 31 - Round One (2)",
+      "panelCount": 150
+    },
+    {
+      "episode": 32,
+      "title": "Ep. 32 - Round Two",
+      "panelCount": 149
+    },
+    {
+      "episode": 33,
+      "title": "Ep. 33 - Round Two (2)",
+      "panelCount": 121
+    },
+    {
+      "episode": 34,
+      "title": "Ep. 34 - Round Two (3)",
+      "panelCount": 112
+    },
+    {
+      "episode": 35,
+      "title": "Ep. 35 - The Final Round",
+      "panelCount": 111
+    },
+    {
+      "episode": 36,
+      "title": "Ep. 36 - The Final Round (2)",
+      "panelCount": 107
+    },
+    {
+      "episode": 37,
+      "title": "Ep. 37 - The Final Round (3)",
+      "panelCount": 147
+    },
+    {
+      "episode": 38,
+      "title": "Ep. 38 - The Final Round (4)",
+      "panelCount": 122
+    },
+    {
+      "episode": 39,
+      "title": "Ep. 39 - The Final Round (5)",
+      "panelCount": 119
+    },
+    {
+      "episode": 40,
+      "title": "Ep. 40 - Wishing Well",
+      "panelCount": 111
+    },
+    {
+      "episode": 41,
+      "title": "Special Episode - Character QnA",
+      "panelCount": 30
+    },
+    {
+      "episode": 42,
+      "title": "Ep. 41 - We're Just No Threat",
+      "panelCount": 150
+    },
+    {
+      "episode": 43,
+      "title": "Ep. 42 - Cross to Bear",
+      "panelCount": 146
+    },
+    {
+      "episode": 44,
+      "title": "Ep. 43 - A Perfect Lie",
+      "panelCount": 159
+    },
+    {
+      "episode": 45,
+      "title": "Ep. 44 - Freak",
+      "panelCount": 136
+    },
+    {
+      "episode": 46,
+      "title": "Ep. 45 - Wolf in Sheep's Clothing",
+      "panelCount": 106
+    },
+    {
+      "episode": 47,
+      "title": "Ep. 46 - Chance Encounter",
+      "panelCount": 116
+    },
+    {
+      "episode": 48,
+      "title": "Ep. 47 - Chesspieces",
+      "panelCount": 118
+    },
+    {
+      "episode": 49,
+      "title": "Ep. 48 - A Cadmean Victory",
+      "panelCount": 109
+    },
+    {
+      "episode": 50,
+      "title": "Ep. 49 - Cell 4's Day Off",
+      "panelCount": 118
+    },
+    {
+      "episode": 51,
+      "title": "Ep. 50 - Godlings",
+      "panelCount": 146
+    },
+    {
+      "episode": 52,
+      "title": "Ep. 51 - Aberrants",
+      "panelCount": 105
+    },
+    {
+      "episode": 53,
+      "title": "Ep. 52 - Sacrifices",
+      "panelCount": 121
+    },
+    {
+      "episode": 54,
+      "title": "Ep. 53 - Unmaker (Season Finale)",
+      "panelCount": 248
+    },
+    {
+      "episode": 55,
+      "title": "(S2) Ep. 54 - Season 2 Premiere",
+      "panelCount": 243
+    },
+    {
+      "episode": 56,
+      "title": "(S2) Ep. 55 - Traitor, Traitor",
+      "panelCount": 108
+    },
+    {
+      "episode": 57,
+      "title": "(S2) Ep. 56 - Red and White",
+      "panelCount": 95
+    },
+    {
+      "episode": 58,
+      "title": "(S2) Ep. 57 - Trust In Me",
+      "panelCount": 112
+    },
+    {
+      "episode": 59,
+      "title": "(S2) Ep. 58 - Old Dogs",
+      "panelCount": 112
+    },
+    {
+      "episode": 60,
+      "title": "(S2) Ep. 59 - Cell Five",
+      "panelCount": 101
+    },
+    {
+      "episode": 61,
+      "title": "(S2) Ep. 60 - An Eye for Talent",
+      "panelCount": 121
+    },
+    {
+      "episode": 62,
+      "title": "(S2) Ep. 61 - Battle of Egos",
+      "panelCount": 112
+    },
+    {
+      "episode": 63,
+      "title": "(S2) Ep. 62 - Sayeon's Idea of Friendship",
+      "panelCount": 124
+    },
+    {
+      "episode": 64,
+      "title": "(S2) Ep. 63 - End of the Tunnel",
+      "panelCount": 95
+    },
+    {
+      "episode": 65,
+      "title": "(S2) Ep. 64 - Cheese in a Trap",
+      "panelCount": 111
+    },
+    {
+      "episode": 66,
+      "title": "(S2) Ep. 65 - Mind Over Matter",
+      "panelCount": 97
+    },
+    {
+      "episode": 67,
+      "title": "(S2) Ep. 66 - Cage Fight",
+      "panelCount": 111
+    },
+    {
+      "episode": 68,
+      "title": "(S2) Ep. 67 - Dead Man Walking",
+      "panelCount": 107
+    },
+    {
+      "episode": 69,
+      "title": "(S2) Ep. 68 - No Holding Back",
+      "panelCount": 96
+    },
+    {
+      "episode": 70,
+      "title": "(S2) Ep. 69 - A Real Monster",
+      "panelCount": 107
+    },
+    {
+      "episode": 71,
+      "title": "(S2) Ep. 70 - The Trump Card",
+      "panelCount": 126
+    },
+    {
+      "episode": 72,
+      "title": "(S2) Ep. 71 - Unsettled Debts",
+      "panelCount": 103
+    },
+    {
+      "episode": 73,
+      "title": "(S2) Ep. 72 - Blood Covenant",
+      "panelCount": 99
+    },
+    {
+      "episode": 74,
+      "title": "(S2) Ep. 73 - The Girl and the Devil",
+      "panelCount": 104
+    },
+    {
+      "episode": 75,
+      "title": "(S2) Ep. 74 - The Better Sister",
+      "panelCount": 99
+    },
+    {
+      "episode": 76,
+      "title": "(S2) Ep. 75 - Gates of Horn and Ivory",
+      "panelCount": 128
+    },
+    {
+      "episode": 77,
+      "title": "(S2) Ep. 76 - The Level Tens",
+      "panelCount": 92
+    },
+    {
+      "episode": 78,
+      "title": "(S2) Ep. 77 - Bloodlust",
+      "panelCount": 92
+    },
+    {
+      "episode": 79,
+      "title": "(S2) Ep. 78 - Why Her?",
+      "panelCount": 128
+    },
+    {
+      "episode": 80,
+      "title": "(S2) Ep. 79 - Stress Fractures",
+      "panelCount": 123
+    },
+    {
+      "episode": 81,
+      "title": "(S2) Ep. 80 - Crow, Heron, Wolf",
+      "panelCount": 124
+    },
+    {
+      "episode": 82,
+      "title": "(S2) Ep. 81 - Beast Hunting",
+      "panelCount": 103
+    },
+    {
+      "episode": 83,
+      "title": "(S2) Ep. 82 - Team Sports",
+      "panelCount": 100
+    },
+    {
+      "episode": 84,
+      "title": "(S2) Ep. 83 - Deserve No Mercy",
+      "panelCount": 144
+    },
+    {
+      "episode": 85,
+      "title": "(S2) Ep. 84 - King Piece",
+      "panelCount": 128
+    },
+    {
+      "episode": 86,
+      "title": "(S2) Ep. 85 - The New Opponent",
+      "panelCount": 100
+    },
+    {
+      "episode": 87,
+      "title": "(S2) Ep. 86 - A Sharp Game",
+      "panelCount": 94
+    },
+    {
+      "episode": 88,
+      "title": "(S2) Ep. 87 - Blue-on-Blue",
+      "panelCount": 98
+    },
+    {
+      "episode": 89,
+      "title": "(S2) Ep. 88 - Impermanent",
+      "panelCount": 96
+    },
+    {
+      "episode": 90,
+      "title": "(S2) Ep. 89 - The Promise",
+      "panelCount": 86
+    },
+    {
+      "episode": 91,
+      "title": "(S2) Ep. 90 - First-Person Shooters",
+      "panelCount": 106
+    },
+    {
+      "episode": 92,
+      "title": "(S2) Ep. 91 - Deal with the Devil",
+      "panelCount": 92
+    },
+    {
+      "episode": 93,
+      "title": "(S2) Ep. 92 - The Impossible Task",
+      "panelCount": 111
+    },
+    {
+      "episode": 94,
+      "title": "(S2) Ep. 93 - Perfectly Despicable",
+      "panelCount": 91
+    },
+    {
+      "episode": 95,
+      "title": "(S2) Ep. 94 - Sayeon's Theater",
+      "panelCount": 96
+    },
+    {
+      "episode": 96,
+      "title": "(S2) Ep. 95 - Doomed",
+      "panelCount": 101
+    },
+    {
+      "episode": 97,
+      "title": "(S2) Ep. 96 - True Heaven-Sent Angel",
+      "panelCount": 106
+    },
+    {
+      "episode": 98,
+      "title": "(S2) Ep. 97 - The Kindness Variable",
+      "panelCount": 146
+    },
+    {
+      "episode": 99,
+      "title": "(S2) Ep. 98 - Favorite Child",
+      "panelCount": 115
+    },
+    {
+      "episode": 100,
+      "title": "(S2) Ep. 99 - The Absolute Worst, Again",
+      "panelCount": 112
+    },
+    {
+      "episode": 101,
+      "title": "(S2) Ep. 100 - Expiation",
+      "panelCount": 99
+    },
+    {
+      "episode": 102,
+      "title": "(S2) Ep. 101 - Purgatory",
+      "panelCount": 113
+    },
+    {
+      "episode": 103,
+      "title": "(S2) Ep. 102 - Blood In, Blood Out",
+      "panelCount": 111
+    },
+    {
+      "episode": 104,
+      "title": "(S2) Ep. 103 - Insects",
+      "panelCount": 119
+    },
+    {
+      "episode": 105,
+      "title": "(S2) Ep. 104 - The Endgame",
+      "panelCount": 146
+    },
+    {
+      "episode": 106,
+      "title": "(S2) Ep. 105 - A Murder of Crows",
+      "panelCount": 107
+    },
+    {
+      "episode": 107,
+      "title": "(S2) Ep. 106 - The Problem With People Is",
+      "panelCount": 139
+    },
+    {
+      "episode": 108,
+      "title": "(S2) Ep. 107 - Essence of a Leader",
+      "panelCount": 99
+    },
+    {
+      "episode": 109,
+      "title": "(S2) Ep. 108 - A Rigged Game",
+      "panelCount": 99
+    },
+    {
+      "episode": 110,
+      "title": "(S2) Ep. 109 - No Rest for the Wicked",
+      "panelCount": 113
+    },
+    {
+      "episode": 111,
+      "title": "(S2) Ep. 110 - Silence Is Also an Answer",
+      "panelCount": 123
+    },
+    {
+      "episode": 112,
+      "title": "(S2) Ep. 111 - First Kiss",
+      "panelCount": 106
+    },
+    {
+      "episode": 113,
+      "title": "(S2) Ep. 112 - Guilt will Save the World",
+      "panelCount": 123
+    },
+    {
+      "episode": 114,
+      "title": "(S2) Ep. 113 - Nyctophobia",
+      "panelCount": 108
+    },
+    {
+      "episode": 115,
+      "title": "(S2) Ep. 114 - Rumination Desperation",
+      "panelCount": 147
+    },
+    {
+      "episode": 116,
+      "title": "(S2) Ep. 115 - Delusion or Ambition",
+      "panelCount": 102
+    },
+    {
+      "episode": 117,
+      "title": "(S2) Ep. 116 - Kill the Oracle",
+      "panelCount": 126
+    },
+    {
+      "episode": 118,
+      "title": "(S2) Ep. 117 - Three Fatal Weaknesses",
+      "panelCount": 104
+    },
+    {
+      "episode": 119,
+      "title": "(S2) Ep. 118 - Algol",
+      "panelCount": 134
+    },
+    {
+      "episode": 120,
+      "title": "(S2) Ep. 119 - Webspinning",
+      "panelCount": 92
+    },
+    {
+      "episode": 121,
+      "title": "(S2) Ep. 120 - Skiamachia",
+      "panelCount": 114
+    },
+    {
+      "episode": 122,
+      "title": "(S2) Ep. 121 - You Were Warned",
+      "panelCount": 107
+    },
+    {
+      "episode": 123,
+      "title": "(S2) Ep. 122 - Pit Viper",
+      "panelCount": 99
+    },
+    {
+      "episode": 124,
+      "title": "(S2) Ep. 123 - Cold Blood",
+      "panelCount": 117
+    },
+    {
+      "episode": 125,
+      "title": "(S2) Ep. 124 - Remorseless",
+      "panelCount": 120
+    },
+    {
+      "episode": 126,
+      "title": "(S2) Ep. 125 - The Penitent",
+      "panelCount": 104
+    },
+    {
+      "episode": 127,
+      "title": "(S2) Ep. 126 - Destabilize",
+      "panelCount": 98
+    },
+    {
+      "episode": 128,
+      "title": "(S2) Ep. 127 - Player Three",
+      "panelCount": 94
+    },
+    {
+      "episode": 129,
+      "title": "(S2) Ep. 128 - Three Can Keep a Secret",
+      "panelCount": 100
+    },
+    {
+      "episode": 130,
+      "title": "(S2) Ep. 129 - A Hopeless Dream",
+      "panelCount": 145
+    },
+    {
+      "episode": 131,
+      "title": "(S2) Ep. 130 - Heart over Head",
+      "panelCount": 113
+    },
+    {
+      "episode": 132,
+      "title": "(S2) Ep. 131 - Beach Episode",
+      "panelCount": 113
+    },
+    {
+      "episode": 133,
+      "title": "(S2) Ep. 132 - To the Moon and Back",
+      "panelCount": 93
+    }
+  ]
+}
