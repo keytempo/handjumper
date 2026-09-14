@@ -1,0 +1,356 @@
+name: Update archive
+
+"on":
+  schedule:
+    # Sleepy's observed UTC upload time plus buffer.
+    - cron: "5 7 * * 3"
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: "Number of parallel archive shards"
+        required: false
+        default: "16"
+        type: string
+
+concurrency:
+  group: archive-update
+  cancel-in-progress: false
+
+# Least-privilege default: nothing needs write access except the commit job,
+# which grants itself contents/issues write below. discover and archive only
+# ever read the repo, so they run with whatever this default is.
+permissions:
+  contents: read
+
+# ---------------------------------------------------------------------------
+# Phase 1 — discover incomplete episodes and compute the shard matrix.
+# Phase 2 — N parallel shards, each downloading & encoding its slice. A shard
+#           that errors is still marked failed (so it's visible and reported
+#           below with its index), but its partial output is still collected
+#           and uploaded, so the next run can pick up where it left off.
+# Phase 3 — merge shard outputs, rebuild manifest, commit & push. Runs even
+#           if some shards failed, so successful shards' work isn't lost.
+# ---------------------------------------------------------------------------
+
+jobs:
+  # ---- Phase 1: Discover ---------------------------------------------------
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    outputs:
+      has_work: ${{ steps.discover.outputs.has_work }}
+      matrix: ${{ steps.discover.outputs.matrix }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python build environment
+        uses: ./.github/actions/setup-python-env
+
+      - name: Discover incomplete episodes
+        id: discover
+        run: python archive/archive.py --discover --shard-total ${{ inputs.shards || '16' }}
+
+  # ---- Phase 2: Archive (parallel shards) ----------------------------------
+  archive:
+    needs: discover
+    # No always()/failure()/cancelled() here on purpose: we WANT the normal
+    # "only run if discover succeeded" gate. needs.discover.result is checked
+    # explicitly (rather than relying only on has_work being empty on
+    # failure) so the intent is clear from reading the condition alone.
+    if: needs.discover.result == 'success' && needs.discover.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        shard-index: ${{ fromJSON(needs.discover.outputs.matrix) }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python build environment
+        uses: ./.github/actions/setup-python-env
+
+      - name: Archive shard ${{ matrix.shard-index }}
+        id: update
+        run: >
+          python archive/archive.py
+          --shard-index ${{ matrix.shard-index }}
+          --shard-total ${{ inputs.shards || '16' }}
+          --skip-manifest
+
+      - name: Record shard status
+        # Writes a marker file (named after this shard's index) only when
+        # the step above failed, so the commit job can name which shard(s)
+        # failed instead of just saying "something failed somewhere".
+        if: always()
+        run: |
+          mkdir -p shard-status
+          if [ "${{ steps.update.outcome }}" = "failure" ]; then
+            touch "shard-status/${{ matrix.shard-index }}"
+          fi
+
+      - name: Upload shard status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-status-${{ matrix.shard-index }}
+          path: shard-status/
+          if-no-files-found: ignore
+          retention-days: 1
+
+      - name: Collect new files for upload
+        # Runs even if "Archive shard" failed, so whatever the shard managed
+        # to produce before erroring still gets uploaded and isn't lost.
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p shard-output
+
+          # -z gives NUL-delimited, never-quoted paths. The default porcelain
+          # format quotes any path containing a space or other special
+          # character, which a plain `read -r _ file` doesn't unquote — that
+          # silently mismatches the real filesystem path and the file gets
+          # dropped without any error.
+          while IFS= read -r -d '' entry; do
+            status="${entry:0:2}"
+            file="${entry:3}"
+
+            # A rename/copy ("R"/"C" in either status column) is followed by
+            # a second NUL-terminated field holding the original path;
+            # consume and discard it so it isn't misread as the next entry.
+            case "$status" in
+              R*|*R|C*|*C)
+                IFS= read -r -d '' _old_path
+                ;;
+            esac
+
+            if [ -f "$file" ]; then
+              mkdir -p "shard-output/$(dirname "$file")"
+              cp "$file" "shard-output/$file"
+            fi
+          done < <(git status --porcelain=1 -z -u -- episodes/ map/)
+
+      - name: Upload shard output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-output-${{ matrix.shard-index }}
+          path: shard-output/
+          if-no-files-found: ignore
+          retention-days: 1
+          compression-level: 0  # panels are already WebP-compressed
+
+  # ---- Phase 3: Merge, manifest, commit & push -----------------------------
+  commit:
+    needs: [discover, archive]
+    # always() is required here: without it, GitHub auto-skips this job
+    # whenever a needed job (archive) doesn't succeed, regardless of what
+    # the rest of this expression says. We deliberately want to still run
+    # and commit whatever shards did complete even if others failed — so
+    # always() opts back in, and the conditions below re-implement the
+    # exact gating we actually want:
+    #   - discover must have succeeded (there's nothing to do otherwise)
+    #   - there must have been work to do in the first place
+    #   - skip only if the run was cancelled outright (partial commit of a
+    #     cancelled run isn't desired)
+    if: >-
+      always() &&
+      needs.discover.result == 'success' &&
+      needs.discover.outputs.has_work == 'true' &&
+      needs.archive.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    # Overrides the workflow-level "contents: read" default — this is the
+    # only job that pushes commits or touches issues.
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history so fetch/rebase in push_with_retry works reliably
+
+      - name: Download all shard outputs
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-output-*
+          merge-multiple: true
+
+      - name: Download shard status
+        # Best-effort: used only to name failed shards in the report step
+        # below, so a hiccup here shouldn't block the rest of the job.
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-status-*
+          path: /tmp/shard-status
+          merge-multiple: true
+
+      - name: Set up Python build environment
+        uses: ./.github/actions/setup-python-env
+
+      - name: Rebuild manifest
+        run: python archive/archive.py --manifest-only
+
+      - name: Commit generated output
+        run: |
+          set -euo pipefail
+
+          git config user.name "keytempo"
+          git config user.email "319865791+keytempo@users.noreply.github.com"
+
+          branch="$(git rev-parse --abbrev-ref HEAD)"
+
+          # Episodes run ~35-45 MB per commit once images are included, so a
+          # push covers roughly this many episodes' worth of new commits —
+          # comfortably under GitHub's push-size comfort zone while still
+          # cutting the round-trip count way down versus pushing after every
+          # single episode. Tune down if episodes get noticeably larger.
+          push_batch_size=32
+
+          is_valid_json() {
+            python -m json.tool "$1" > /dev/null 2>&1
+          }
+
+          # Local commits not yet on the remote branch. A successful push
+          # updates origin/$branch locally, so this naturally goes back to 0
+          # after each push — no separate counter to keep in sync by hand.
+          unpushed_commit_count() {
+            git rev-list --count "origin/$branch..HEAD"
+          }
+
+          # Retries a push if the remote moved (e.g. something else committed
+          # to the branch during this run) by rebasing on top and trying again.
+          push_with_retry() {
+            local attempt=1
+            local max_attempts=8
+            until git push; do
+              if [ "$attempt" -ge "$max_attempts" ]; then
+                echo "::error::git push failed after $max_attempts attempts"
+                return 1
+              fi
+              echo "Push rejected (attempt $attempt/$max_attempts) — fetching and rebasing before retry..."
+              git fetch origin "$branch"
+              git rebase --autostash "origin/$branch"
+              attempt=$((attempt + 1))
+              sleep $((attempt * 5))
+            done
+          }
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Archive is already up to date."
+            exit 0
+          fi
+
+          # Push whatever's committed but not yet on the remote. A successful
+          # push updates origin/$branch locally, so unpushed_commit_count()
+          # naturally goes back to 0 afterward — nothing else to reset.
+          flush_unpushed() {
+            local remaining
+            remaining="$(unpushed_commit_count)"
+            if [ "$remaining" -gt 0 ]; then
+              echo "Pushing $remaining commit(s)..."
+              push_with_retry
+            fi
+          }
+
+          # Paths intentionally left out of the final catch-all commit below,
+          # because leaving them uncommitted (not deleted) is what lets the
+          # next run notice they're still unfinished and try again. Starts
+          # with episodes/ itself; any map/<ep>.json skipped for bad JSON
+          # gets appended in the loop so it stays paired with its (also
+          # excluded) episode directory rather than getting swept in alone.
+          skip_pathspecs=(':!episodes/')
+
+          # Commit episode by episode — each one lands as its own revertible
+          # commit — but only push once $push_batch_size commits have piled
+          # up, rather than after every single one. If the job gets cut off
+          # mid-run, at most one batch's worth of already-committed episodes
+          # is at risk of staying unpushed; everything before that batch was
+          # already flushed to the remote. An episode is only committed once
+          # it has a matching, well-formed map/<ep>.json. An episode
+          # directory with no valid map entry means archive.py didn't finish
+          # writing it, so it's deliberately left uncommitted for the next
+          # run to pick back up, rather than swept into the final commit below.
+          for ep_dir in episodes/*/; do
+            [ -d "$ep_dir" ] || continue
+            ep="$(basename "$ep_dir")"
+            map_file="map/$ep.json"
+
+            [ -f "$map_file" ] || continue
+            git status --porcelain "$ep_dir" "$map_file" | grep -q . || continue
+
+            if ! is_valid_json "$map_file"; then
+              echo "::warning::Skipping episode $ep — $map_file is not valid JSON, leaving it uncommitted."
+              skip_pathspecs+=(":!$map_file")
+              continue
+            fi
+
+            echo "Committing episode $ep..."
+            git add "$ep_dir" "$map_file"
+            git commit -m "Archive episode $ep"
+
+            if [ "$(unpushed_commit_count)" -ge "$push_batch_size" ]; then
+              echo "Batch of $push_batch_size commit(s) reached — pushing..."
+              push_with_retry
+            fi
+          done
+
+          # Final commit for map/manifest.json and any other remaining files.
+          # Excludes episodes/ plus any map/<ep>.json gathered into
+          # skip_pathspecs above, so a skipped episode's leftover map entry
+          # can't get committed on its own once its directory is excluded.
+          if [ -n "$(git status --porcelain -- . "${skip_pathspecs[@]}")" ]; then
+            if [ -f map/manifest.json ] && ! is_valid_json map/manifest.json; then
+              echo "::error::map/manifest.json is not valid JSON; leaving it uncommitted."
+              # Still push whatever valid episode work already landed above —
+              # it shouldn't be lost just because this run's manifest is broken.
+              flush_unpushed
+              exit 1
+            fi
+
+            echo "Committing final manifest update..."
+            git add -- . "${skip_pathspecs[@]}"
+            git commit -m "Update archive manifest"
+          fi
+
+          flush_unpushed
+
+      - name: Report incomplete archive
+        if: needs.archive.result == 'failure' || steps.download.outcome == 'failure' || failure()
+        run: |
+          if [ "${{ needs.archive.result }}" = "failure" ]; then
+            if [ -d /tmp/shard-status ] && [ -n "$(find /tmp/shard-status -mindepth 1 -maxdepth 1 -print -quit)" ]; then
+              failed_shards="$(find /tmp/shard-status -mindepth 1 -maxdepth 1 -printf '%f\n' | sort -n | paste -sd, -)"
+              echo "::warning::Archive shard(s) $failed_shards exited with errors; any partial progress from other shards was committed for the next run to continue from."
+            else
+              echo "::warning::One or more archive shards exited with errors; any partial progress was committed for the next run to continue from."
+            fi
+          elif [ "${{ steps.download.outcome }}" = "failure" ]; then
+            echo "::warning::Downloading shard output artifacts failed outright (this is not the normal 'nothing to archive' case, which never errors) — the manifest may have been rebuilt from incomplete data. Check the logs above."
+          else
+            echo "::warning::The commit/push step failed; shard progress may not have been committed — check the logs above."
+          fi
+          exit 1
+
+      - name: Open or update issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing="$(gh issue list --state open --search "\"Archive update failed\" in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Failed again: $run_url"
+          else
+            gh issue create --title "Archive update failed" --body "The scheduled archive update failed: $run_url"
+          fi
