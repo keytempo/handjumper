@@ -1,5 +1,5 @@
 {
-  "totalEpisodes": 133,
+  "totalEpisodes": 134,
   "episodes": [
     {
       "episode": 1,
@@ -665,6 +665,11 @@
       "episode": 133,
       "title": "(S2) Ep. 132 - To the Moon and Back",
       "panelCount": 93
+    },
+    {
+      "episode": 134,
+      "title": "(S2) Ep. 133 - Humanity",
+      "panelCount": 115
     }
   ]
 }
